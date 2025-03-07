@@ -5,7 +5,7 @@ import ReactPaginate from "react-paginate";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import ModalConfirm from "./ModalConfirm";
-import _ from "lodash";
+import _, { cloneDeep, initial } from "lodash";
 const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
@@ -30,7 +30,6 @@ const TableUsers = (props) => {
   };
 
   const handleEditUserFromModal = (user) => {
-    console.log(user);
     let cloneListUsers = _.cloneDeep(listUsers);
     let index = listUsers.findIndex((item) => item.id === user.id);
     cloneListUsers[index].first_name = user.first_name;
@@ -66,7 +65,12 @@ const TableUsers = (props) => {
   const handleDeleteUser = (user) => {
     setDataUserDelete(user);
     setIsShowModalDelete(true);
-    console.log(user);
+  };
+
+  const handleDeleteUserFromModal = (user) => {
+    let cloneListUsers = _.cloneDeep(listUsers);
+    cloneListUsers = cloneListUsers.filter((item) => item.id !== user.id);
+    setListUsers(cloneListUsers);
   };
   return (
     <>
@@ -156,6 +160,7 @@ const TableUsers = (props) => {
         show={isShowModalDelete}
         handleClose={handleClose}
         dataUserDelete={dataUserDelete}
+        handleDeleteUserFromModal={handleDeleteUserFromModal}
       />
     </>
   );
