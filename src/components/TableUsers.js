@@ -5,7 +5,7 @@ import ReactPaginate from "react-paginate";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import ModalConfirm from "./ModalConfirm";
-import _ from "lodash";
+import _, { debounce } from "lodash";
 import "./TableUsers.scss";
 
 const TableUsers = (props) => {
@@ -58,7 +58,6 @@ const TableUsers = (props) => {
   };
 
   const handlePageClick = (event) => {
-    console.log(">>> event lib :", event);
     getUsers(+event.selected + 1);
   };
 
@@ -87,6 +86,21 @@ const TableUsers = (props) => {
     setListUsers(cloneListUsers);
   };
 
+  const handleSearch = debounce((event) => {
+    let term = event.target.value;
+    console.log(">>> run search term...", term);
+    if (term) {
+      let cloneListUsers = _.cloneDeep(listUsers);
+      cloneListUsers = cloneListUsers.filter((item) =>
+        item.email.includes(term)
+      );
+      //console.log(cloneListUsers);
+      setListUsers(cloneListUsers);
+    } else {
+      getUsers(1);
+    }
+  }, 800);
+
   return (
     <>
       <div className="my-3 add-new">
@@ -100,6 +114,16 @@ const TableUsers = (props) => {
           Add new user
         </button>
       </div>
+
+      <div className="col-4 my-3">
+        <input
+          className="form-control"
+          placeholder="Search user by email..."
+          //value={keyword}
+          onChange={(event) => handleSearch(event)}
+        />
+      </div>
+
       <Table striped bordered hover>
         <thead>
           <tr>
