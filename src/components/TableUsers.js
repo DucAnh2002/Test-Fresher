@@ -5,8 +5,9 @@ import ReactPaginate from "react-paginate";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import ModalConfirm from "./ModalConfirm";
-import _, { debounce } from "lodash";
+import _, { debounce, iteratee } from "lodash";
 import "./TableUsers.scss";
+import { CSVLink, CSVDownload } from "react-csv";
 
 const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
@@ -23,6 +24,8 @@ const TableUsers = (props) => {
 
   const [sortBy, setSortBy] = useState("asc");
   const [sortField, setSortField] = useState("id");
+
+  const [dataExport, setDataExport] = useState([]);
 
   const handleClose = () => {
     setIsShowModalAddNew(false);
@@ -88,7 +91,6 @@ const TableUsers = (props) => {
 
   const handleSearch = debounce((event) => {
     let term = event.target.value;
-    console.log(">>> run search term...", term);
     if (term) {
       let cloneListUsers = _.cloneDeep(listUsers);
       cloneListUsers = cloneListUsers.filter((item) =>
@@ -101,18 +103,52 @@ const TableUsers = (props) => {
     }
   }, 800);
 
+  const getUsersExport = (event, done) => {
+    let result = [];
+    if (listUsers && listUsers.length > 0) {
+      result.push(["Id", "Email", "First_name", " Last_name"]);
+      listUsers.map((item, index) => {
+        let arr = [];
+        arr[0] = item.id;
+        arr[1] = item.email;
+        arr[2] = item.first_name;
+        arr[3] = item.last_name;
+        result.push(arr);
+      });
+      setDataExport(result);
+      done();
+    }
+  };
+
   return (
     <>
       <div className="my-3 add-new">
         <span>
           <b>List User: </b>
         </span>
-        <button
-          className="btn btn-success"
-          onClick={() => setIsShowModalAddNew(true)}
-        >
-          Add new user
-        </button>
+        <div className="group-btns">
+          <label htmlFor="test">Test</label>
+          <input id="test" type="file" />
+          <button className="btn btn-warning">
+            <i className="fa-solid fa-file-import"></i> Import{" "}
+          </button>
+
+          <CSVLink
+            filename={"user.csv"}
+            className="btn btn-primary"
+            data={dataExport}
+            asyncOnClick={true}
+            onClick={getUsersExport}
+          >
+            <i className="fa-solid fa-file-arrow-down"></i> Export
+          </CSVLink>
+          <button
+            className="btn btn-success"
+            onClick={() => setIsShowModalAddNew(true)}
+          >
+            <i className="fa-solid fa-circle-plus"></i> Add new
+          </button>
+        </div>
       </div>
 
       <div className="col-4 my-3">
