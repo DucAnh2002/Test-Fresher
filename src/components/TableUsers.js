@@ -5,10 +5,11 @@ import ReactPaginate from "react-paginate";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import ModalConfirm from "./ModalConfirm";
-import _, { debounce, iteratee } from "lodash";
+import _, { debounce, iteratee, result } from "lodash";
 import "./TableUsers.scss";
 import { CSVLink, CSVDownload } from "react-csv";
-
+import Papa from "papaparse";
+import { toast } from "react-toastify";
 const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
@@ -106,7 +107,7 @@ const TableUsers = (props) => {
   const getUsersExport = (event, done) => {
     let result = [];
     if (listUsers && listUsers.length > 0) {
-      result.push(["Id", "Email", "First_name", " Last_name"]);
+      result.push(["Id", "Email", "First name", " Last name"]);
       listUsers.map((item, index) => {
         let arr = [];
         arr[0] = item.id;
@@ -120,6 +121,55 @@ const TableUsers = (props) => {
     }
   };
 
+  const handleImportCSV = (event) => {
+    if (event.target && event.target.files && event.target.files[0]) {
+      let file = event.target.files[0];
+
+      if (file.type !== "text/csv") {
+        toast.error("Only accept csv files...");
+        return;
+      }
+      console.log(">>> Check file upload: ", file);
+      //Papa local csv file
+      Papa.parse(file, {
+        // header: true,
+        complete: function (results) {
+          let rawCSV = results.data;
+          if (rawCSV.length > 0) {
+            if (rawCSV[0] && rawCSV[0].length === 3) {
+              if (
+                rawCSV[0][0] !== "email" ||
+                rawCSV[0][1] !== "first_name" ||
+                rawCSV[0][2] !== "last_name"
+              ) {
+                toast.error("Wrong format Headler CSV file! ");
+              } else {
+                let result = [];
+                rawCSV.map((item, index) => {
+                  if (index > 0 && item.length === 3) {
+                    let obj = {};
+                    obj.email = item[0];
+                    obj.first_name = item[1];
+                    obj.last_name = item[2];
+                    result.push(obj);
+                  }
+                });
+                setListUsers(result);
+                console.log(">>> Check result: ", result);
+              }
+            } else {
+              toast.error("Wrong format CSV file! ");
+            }
+          } else {
+            toast.error("Not found data on CSV file! ");
+          }
+
+          console.log("finished: ", results.data);
+        },
+      });
+    }
+  };
+
   return (
     <>
       <div className="my-3 add-new">
@@ -127,11 +177,15 @@ const TableUsers = (props) => {
           <b>List User: </b>
         </span>
         <div className="group-btns">
-          <label htmlFor="test">Test</label>
-          <input id="test" type="file" />
-          <button className="btn btn-warning">
-            <i className="fa-solid fa-file-import"></i> Import{" "}
-          </button>
+          <label htmlFor="test" className="btn btn-warning">
+            <i className="fa-solid fa-file-import"></i> Import
+          </label>
+          <input
+            id="test"
+            type="file"
+            hidden
+            onChange={(event) => handleImportCSV(event)}
+          />
 
           <CSVLink
             filename={"user.csv"}
