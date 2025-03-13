@@ -10,6 +10,7 @@ import "./TableUsers.scss";
 import { CSVLink, CSVDownload } from "react-csv";
 import Papa from "papaparse";
 import { toast } from "react-toastify";
+
 const TableUsers = (props) => {
   const [listUsers, setListUsers] = useState([]);
   const [totalUsers, setTotalUsers] = useState(0);
@@ -145,7 +146,7 @@ const TableUsers = (props) => {
                 toast.error("Wrong format Headler CSV file! ");
               } else {
                 let result = [];
-                rawCSV.map((item, index) => {
+                rawCSV.map = (item, index) => {
                   if (index > 0 && item.length === 3) {
                     let obj = {};
                     obj.email = item[0];
@@ -153,7 +154,7 @@ const TableUsers = (props) => {
                     obj.last_name = item[2];
                     result.push(obj);
                   }
-                });
+                };
                 setListUsers(result);
                 console.log(">>> Check result: ", result);
               }
