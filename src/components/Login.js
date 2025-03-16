@@ -21,7 +21,7 @@ const Login = () => {
 
     setLoadingAPI(true);
 
-    let res = await loginApi(email, password);
+    let res = await loginApi(email.trim(), password);
     if (res && res.token) {
       loginContext(email, res.token);
       navigate("/");
@@ -37,6 +37,14 @@ const Login = () => {
   const handleGoBack = () => {
     navigate("/");
   };
+
+  const handlePressEnter = (event) => {
+    console.log(" >>> event: ", event);
+    if (event && event.key === "Enter") {
+      handlelogin();
+    }
+  };
+
   return (
     <>
       <div className="login-container col-4 scol-sm-4">
@@ -55,6 +63,7 @@ const Login = () => {
             placeholder="password..."
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            onKeyDown={(event) => handlePressEnter(event)}
           />
           <i
             className={
