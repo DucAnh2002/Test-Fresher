@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/Test-Fresher/static/css/main.9f04dae8.chunk.css",
+    "main.js": "/Test-Fresher/static/js/main.a6e9c08d.chunk.js",
+    "main.js.map": "/Test-Fresher/static/js/main.a6e9c08d.chunk.js.map",
+    "runtime-main.js": "/Test-Fresher/static/js/runtime-main.aee671d9.js",
+    "runtime-main.js.map": "/Test-Fresher/static/js/runtime-main.aee671d9.js.map",
+    "static/css/2.c25c1ac5.chunk.css": "/Test-Fresher/static/css/2.c25c1ac5.chunk.css",
+    "static/js/2.be42f9b7.chunk.js": "/Test-Fresher/static/js/2.be42f9b7.chunk.js",
+    "static/js/2.be42f9b7.chunk.js.map": "/Test-Fresher/static/js/2.be42f9b7.chunk.js.map",
+    "static/js/3.fce239e1.chunk.js": "/Test-Fresher/static/js/3.fce239e1.chunk.js",
+    "static/js/3.fce239e1.chunk.js.map": "/Test-Fresher/static/js/3.fce239e1.chunk.js.map",
+    "index.html": "/Test-Fresher/index.html",
+    "static/css/2.c25c1ac5.chunk.css.map": "/Test-Fresher/static/css/2.c25c1ac5.chunk.css.map",
+    "static/css/main.9f04dae8.chunk.css.map": "/Test-Fresher/static/css/main.9f04dae8.chunk.css.map",
+    "static/js/2.be42f9b7.chunk.js.LICENSE.txt": "/Test-Fresher/static/js/2.be42f9b7.chunk.js.LICENSE.txt",
+    "static/media/all.min.css": "/Test-Fresher/static/media/fa-v4compatibility.afac8956.woff2"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.aee671d9.js",
+    "static/css/2.c25c1ac5.chunk.css",
+    "static/js/2.be42f9b7.chunk.js",
+    "static/css/main.9f04dae8.chunk.css",
+    "static/js/main.a6e9c08d.chunk.js"
+  ]
+}
